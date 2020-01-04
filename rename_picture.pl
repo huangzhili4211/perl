@@ -1,15 +1,26 @@
 #!/usr/bin/perl -w
 use strict;
 use File::Copy;
-my $dir = "/hzl/perlcode/Pictures";
-mkdir($dir);
+use Getopt::Long;
+our $compareGroup2;
+my $new_pic_name;
+our $project,
+our $projectname,
+GetOptions ( 
+    'cp=s'	    => \$compareGroup2,
+    'p=s'	    => \$project,
+    'pj=s'	    => \$projectname,
+);
+my $dir = "E:\\$project\\$projectname\\Project_data\\Pictures";
+system("mkdir $dir") unless(-e $dir);
 my @pic_path = ();
-open(my $PIC, "<path_of_pictures.txt") || die "$!";
+open(my $PIC, "<picture_path.txt") || die "$!";
 foreach(<$PIC>){
+    chomp;
+    my $line = $_ =~ s/\r|\n//gr;
     if($_ eq "\n") {next;}
     push(@pic_path,$_);
 }
-print "@pic_path\n";
 
 my %rename_hash = (
     'cv'			    => 'Figure3.1',
@@ -17,7 +28,7 @@ my %rename_hash = (
     'uniqP'			    => 'Figure3.3',
     'pepSeq.pepLength'		    => 'Figure3.4',
     'coverage_pie'		    => 'Figure3.5',
-    'proRatiodistribution'	    => 'Figure4.1',
+    'normprotRatiodistribution'	    => 'Figure4.1',
     'Volcano'			    => 'Figure4.2',
     'fun_stat'			    => 'Figure5.1',
     'biological_process'	    => 'Figure5.2',
@@ -29,18 +40,30 @@ my %rename_hash = (
     'C-barchart'		    => 'Figure6.1',
     'F-barchart'		    => 'Figure6.1',
     'P-barchart'		    => 'Figure6.1',
-    'path-bubble'		    => 'Figure6.3'    
+    '.path-bubble'		    => 'Figure6.3'    
 
 );
 my @old_name = keys %rename_hash;
 foreach(@old_name){
     my $old_pic_name = $_;
     foreach(@pic_path){
-	if(/($old_pic_name).pdf$/){
-	    my $new_pic_name = $_ =~ s/$1/$rename_hash{$old_pic_name}_$old_pic_name/r;
-	    print $new_pic_name,"\n";
-	    
+	if(/$compareGroup2\_?$old_pic_name\.(png|pdf)$/){
+	     $new_pic_name = $& =~ s/$&/$rename_hash{$old_pic_name}_$&/r;
+	     print $new_pic_name,"\n";
+	     my $cop = File::Spec->catfile($dir,$new_pic_name);
+	     my $temp = $_ =~ s/\n$//gr;
+	     if(-e $temp){
+		copy($temp,$cop) || die "$temp:$!";
+	    }
 	}
-      
+	elsif(/($old_pic_name)\.pdf$/){
+	     $new_pic_name = $& =~ s/$1/$rename_hash{$old_pic_name}_$old_pic_name/r;
+	     print $new_pic_name,"\n";
+	     my $cop = File::Spec->catfile($dir,$new_pic_name);
+	     my $temp = $_ =~ s/\n$//gr;
+	     if(-e $temp){
+		copy($temp,$cop) || die "$temp:$!";
+	    }
+	}
     }
 }
