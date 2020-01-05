@@ -2,19 +2,21 @@
 use strict;
 use File::Copy;
 use Getopt::Long;
+our $compareGroup;
 our $compareGroup2;
 my $new_pic_name;
 our $project,
 our $projectname,
 GetOptions ( 
-    'cp=s'	    => \$compareGroup2,
+    'cp=s'	    => \$compareGroup,
     'p=s'	    => \$project,
     'pj=s'	    => \$projectname,
 );
+$compareGroup2 = $compareGroup =~ s/:/-/r;
 my $dir = "E:\\$project\\$projectname\\Project_data\\Pictures";
 system("mkdir $dir") unless(-e $dir);
 my @pic_path = ();
-open(my $PIC, "<picture_path.txt") || die "$!";
+open(my $PIC, "<E:\\$project\\$projectname\\picture_path.txt") || die "$!";
 foreach(<$PIC>){
     chomp;
     my $line = $_ =~ s/\r|\n//gr;
@@ -53,7 +55,7 @@ foreach(@old_name){
 	     my $cop = File::Spec->catfile($dir,$new_pic_name);
 	     my $temp = $_ =~ s/\n$//gr;
 	     if(-e $temp){
-		copy($temp,$cop) || die "$temp:$!";
+		 copy($temp,$cop) || die "$temp:$!";
 	    }
 	}
 	elsif(/($old_pic_name)\.pdf$/){
@@ -62,7 +64,7 @@ foreach(@old_name){
 	     my $cop = File::Spec->catfile($dir,$new_pic_name);
 	     my $temp = $_ =~ s/\n$//gr;
 	     if(-e $temp){
-		copy($temp,$cop) || die "$temp:$!";
+		 copy($temp,$cop) || die "$temp:$!";
 	    }
 	}
     }
