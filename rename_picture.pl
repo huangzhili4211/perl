@@ -5,13 +5,24 @@ use Getopt::Long;
 our $compareGroup;
 our $compareGroup2;
 my $new_pic_name;
-our $project,
-our $projectname,
+our $project;
+our $projectname;
+our $help;
 GetOptions ( 
     'cp=s'	    => \$compareGroup,
     'p=s'	    => \$project,
     'pj=s'	    => \$projectname,
+    'h|help'	    => \$help,		    
 );
+my $usage =<<USAGE;
+    -cp		    specify the comparegroup,something like RIF:Ctrl
+    -p		    specify the first project fold name
+    -pj		    specify the project name
+    h|help	    help
+USAGE
+die "$usage" if $help;	
+
+
 $compareGroup2 = $compareGroup =~ s/:/-/r;
 my $dir = "E:\\$project\\$projectname\\Project_data\\Pictures";
 system("mkdir $dir") unless(-e $dir);
