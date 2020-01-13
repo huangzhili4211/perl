@@ -3,6 +3,7 @@ use strict;
 use Getopt::Long;
 use Cwd;
 use File::Path;
+use File::Copy;
 our $compareGroup;
 my $fc_cut;
 my $database;
@@ -29,17 +30,24 @@ OPTIONS:
     -h	Optional.   Type this help information.
 USAGE
 die "$usage" if $help;
+print "Please input the path of readme file:\n";
+our $readmePath = <STDIN>;
+chomp $readmePath;
 our $compareGroup2 = $compareGroup =~ s/:/-/r;
 our $compareGroup3 = $compareGroup =~ s/:/;/r;
 our $path = getcwd;
+
+print "The parameter you set are as follows:\nFold Change---$fc_cut\nCompare Group---$compareGroup\nDatabase---$database\n";
 $path =~ s/\//\\/g;
+#our $readmePath = 'E:\hzl\itraq_test\readme_for_itraq';
 our $GoEnrichPath = $path."\\Project_data\\Enrichment\\GO_enrichment\\$compareGroup2\_GO_enrichment";
 our $PathwayEnrichPath = $path."\\Project_data\\Enrichment\\Pathway_enrichment\\$compareGroup2\_Pathway_enrichment";
 our $GO_comparePath = $path."\\Project_data\\GO_compare";
 our $Pathway_comparePath = $path."\\Project_data\\Pathway_compare";
-our $HeatmapPath = $path."\\Project_data\\Heatmap";
+our $HeatmapPath = $path."\\Project_data\\Heatmap\\Heatmap_Abund";
 our $Ident_Quant_resultPath = $path."\\Project_data\\Ident_Quant_result";
 our $PicturesPath = $path."\\Project_data\\Pictures";
+our $VolcanoPath = $path."\\Project_data\\Volcanos";
 our @FunctionDirArray = ("ALL_ID_COG","ALL_ID_GO","ALL_ID_Pathway","$compareGroup2\_down_ID_GO","$compareGroup2\_down_ID_Pathway","$compareGroup2\_up_ID_GO","$compareGroup2\_up_ID_Pathway");
 foreach(@FunctionDirArray){
     mkpath($path."\\Project_data\\Function\\$_");
@@ -51,6 +59,20 @@ mkpath($Pathway_comparePath);
 mkpath($HeatmapPath);
 mkpath($Ident_Quant_resultPath);
 mkpath($PicturesPath);
+mkpath($VolcanoPath);
+our %readmeHash = (
+    'readme.txt'                        =>  "$path/Project_data",
+    'readme-Enrichment.txt'             =>  "$path/Project_data/Enrichment",
+    'readme-Function.txt'               =>  "$path/Project_data/Function",
+    'readme-GO_enrichment.txt'          =>  "$path/Project_data/Enrichment/GO_enrichment",
+    'readme-Heatmap.txt'                =>  "$path/Project_data/Heatmap/Heatmap_Abund",
+    'readme-Ident_Quant_result.txt'     =>  "$path/Project_data/Ident_Quant_result",
+    'readme-Pathway_enrichment.txt'     =>  "$path/Project_data/Enrichment/Pathway_enrichment"
+);
+foreach my $readme ( keys %readmeHash){
+    copy("$readmePath/$readme", "$readmeHash{$readme}");
+}
+
 
 
 
@@ -63,7 +85,6 @@ print $FH $run_code;
 
 #-----I_beforblast.bat-----------------
 open(my $FHI, ">$path\\I_beforblast.bat") || die "$!";
-print $compareGroup3,"\n";
 #-----fc1.5----------------------------
 my $i_code_1 = <<CODE_I_1;
 perl E:\\iTRAQ\\Figure_pipeline\\ratio\\combined_new_raio_v-proteinpilot.pl -cp $compareGroup 
@@ -127,8 +148,6 @@ if($fc_cut==1.5){
 }
 #-----II_afterblast.bat----------------
 open(my $FHII, ">$path\\II_afterblast.bat") || die "$!";
-
-print $compareGroup2,"\n",$compareGroup,"\n";
 
 my $ii_code = <<CODE_II;
 perl E:\\iTRAQ\\Figure_pipeline\\Function\\function_stat.pl
@@ -223,12 +242,6 @@ my ($marker1,$marker2) = split(";",$marker);
 print "$group1---$marker1\n$group2---$marker2";
 my @markerArray1 = split(",",$marker1);
 my @markerArray2 = split(",",$marker2);
-
-
-
-
-
-
 my $size = @markerArray1;
 if($size == 2){
 my $exp_code2 =<<CODE_EXEP2;
