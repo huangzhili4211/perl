@@ -11,9 +11,11 @@ our $compareGroup2;
 my $new_pic_name;
 our $help;
 our $path = getcwd;
+our $ext;
 GetOptions ( 
     'cp=s'	        => \$compareGroup,
-    'h|help'	    => \$help,		    
+    'h|help'	    => \$help,	
+    'p'             => \$ext,	    
 );
 my $usage =<<USAGE;
     -cp		    specify the comparegroup,something like RIF:Ctrl
@@ -83,6 +85,8 @@ foreach(('GO','Pathway')){
     dircopy("$path\\Annotation\\$compareGroup2\_$_\_enrichment", "$path\\Project_data\\Enrichment\\$_\_enrichment\\$compareGroup2\_$_\_enrichment");
     copy("$path/function_stat/$compareGroup2\_$_\_compare_stat.pdf", "$path/Project_data/$_\_compare");
 }
+my $com;
+if($ext){exit;}
 my $workbook = Excel::Writer::XLSX -> new("$path/Project_data/Ident_Quant_result/Ident&Quant_SummaryResult.xlsx");
 my $worksheet = $workbook -> add_worksheet("Proteins");
 my $worksheet2 = $workbook -> add_worksheet("Spectra");
