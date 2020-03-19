@@ -13,18 +13,10 @@ my $marker;
 GetOptions (
     'cp=s'	        => \$compareGroup,
     'fc=f'	        => \$fc_cut,
-<<<<<<< HEAD
     'help|h'	        => \$help,
     'f=s'	        => \$database,
     'm=s'	        => \$marker,
 );
-=======
-    'help|h'	    => \$help,
-    'f=s'	        => \$database,
-    'm=s'	        => \$marker,
-);
-
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 my $usage = <<USAGE;
 USAGE:
 perl deal_parameter.pl <options>
@@ -34,7 +26,6 @@ OPTIONS:
     -cp <string>    Required. Specify the ratio pair name, something like RIF:Ctrl
     -fc <float>	    Required. Specify the FC cutoff.The optional value is 1.2, 1.5, 2   Default is 1.5
     -m	<string>    Required. Specify the marker. for example:113,114,116;117,118,121
-<<<<<<< HEAD
     -h		    Optional. Type this help information.
 USAGE
 die "$usage" if $help;
@@ -52,21 +43,6 @@ our $compareGroup3 = $compareGroup =~ s/:/;/r;
 our $path = getcwd;
 print "The parameter you set are as follows:\nFold Change---$fc_cut\nCompare Group---$compareGroup\nDatabase---$database\n";
 $path =~ s/\//\\/g;
-=======
-    -h	Optional.   Type this help information.
-USAGE
-die "$usage" if $help;
-print "Please input the path of readme file:\n";
-our $readmePath = <STDIN>;
-chomp $readmePath;
-our $compareGroup2 = $compareGroup =~ s/:/-/r;
-our $compareGroup3 = $compareGroup =~ s/:/;/r;
-our $path = getcwd;
-
-print "The parameter you set are as follows:\nFold Change---$fc_cut\nCompare Group---$compareGroup\nDatabase---$database\n";
-$path =~ s/\//\\/g;
-#our $readmePath = 'E:\hzl\itraq_test\readme_for_itraq';
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 our $GoEnrichPath = $path."\\Project_data\\Enrichment\\GO_enrichment\\$compareGroup2\_GO_enrichment";
 our $PathwayEnrichPath = $path."\\Project_data\\Enrichment\\Pathway_enrichment\\$compareGroup2\_Pathway_enrichment";
 our $GO_comparePath = $path."\\Project_data\\GO_compare";
@@ -99,31 +75,16 @@ our %readmeHash = (
 foreach my $readme ( keys %readmeHash){
     copy("$readmePath/$readme", "$readmeHash{$readme}");
 }
-<<<<<<< HEAD
 #-----run.bat---------------------------
 open(my $FH, ">$path\\run.bat") || die "$!";
 my $run_code = <<CODE;
 perl $scriptPath\\iTRAQ_pipeline_v2.3.pl -ef expDesign.txt -i pp_in -nprort 0 -na 1 -fc $fc_cut -pval 0.05 -f $database  -cp $compareGroup
 CODE
 print $FH $run_code;
-=======
-
-
-
-
-#-----run.bat---------------------------
-open(my $FH, ">$path\\run.bat") || die "$!";
-my $run_code = <<CODE;
-perl E:\\iTRAQ\\Figure_pipeline\\iTRAQ_pipeline_v2.3.pl -ef expDesign.txt -i pp_in -nprort 0 -na 1 -fc $fc_cut -pval 0.05 -f $database  -cp $compareGroup
-CODE
-print $FH $run_code;
-
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 #-----I_beforblast.bat-----------------
 open(my $FHI, ">$path\\I_beforblast.bat") || die "$!";
 #-----fc1.5----------------------------
 my $i_code_1 = <<CODE_I_1;
-<<<<<<< HEAD
 perl $scriptPath\\ratio\\combined_new_raio_v-proteinpilot.pl -cp $compareGroup 
 
 perl $scriptPath\\ratio\\norm_final_ratio.pl -cp $compareGroup -type com
@@ -175,59 +136,6 @@ perl $scriptPath\\Figure\\for_cvbox.pl $marker $compareGroup3
 perl $scriptPath\\Figure\\for_cvdis.pl $marker $compareGroup3
 
 perl $scriptPath\\volcano\\For_volcanos_ggplot.pl -cp $compareGroup -fc $fc_cut
-=======
-perl E:\\iTRAQ\\Figure_pipeline\\ratio\\combined_new_raio_v-proteinpilot.pl -cp $compareGroup 
-
-perl E:\\iTRAQ\\Figure_pipeline\\ratio\\norm_final_ratio.pl -cp $compareGroup -type com
-
-perl E:\\iTRAQ\\Figure_pipeline\\diff\\Diff_fa.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\peptide_filted_v2.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\all_figure.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\for_cvbox.pl $marker $compareGroup3 
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\for_cvdis.pl $marker $compareGroup3
-
-perl E:\\iTRAQ\\Figure_pipeline\\volcano\\For_volcanos_ggplot.pl -cp $compareGroup -fc $fc_cut
-CODE_I_1
-#-----fc1.2----------------------------
-my $i_code_2 = <<CODE_I_2;
-perl E:\\iTRAQ\\Figure_pipeline\\ratio\\ratio\\combined_new_raio_v-proteinpilot.pl -cp $compareGroup 
-
-perl E:\\iTRAQ\\Figure_pipeline\\ratio\\ratio\\norm_final_ratio.pl -cp $compareGroup -type com
-
-perl E:\\iTRAQ\\Figure_pipeline\\diff\\Diff_fa.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\peptide_filted_v2.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\all_figure.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\for_cvbox.pl $marker $compareGroup3 
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\for_cvdis.pl $marker $compareGroup3
-
-perl E:\\iTRAQ\\Figure_pipeline\\volcano\\For_volcanos_ggplot.pl -cp $compareGroup -fc $fc_cut
-CODE_I_2
-#-----fc2-------------------------------
-my $i_code_3 = <<CODE_I_3;
-perl E:\\iTRAQ\\Figure_pipeline\\ratio\\ratio2\\combined_new_raio_v-proteinpilot.pl -cp $compareGroup 
-
-perl E:\\iTRAQ\\Figure_pipeline\\ratio\\ratio2\\norm_final_ratio.pl -cp $compareGroup -type com
-
-perl E:\\iTRAQ\\Figure_pipeline\\diff\\Diff_fa.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\peptide_filted_v2.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\all_figure.pl
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\for_cvbox.pl $marker $compareGroup3 
-
-perl E:\\iTRAQ\\Figure_pipeline\\Figure\\for_cvdis.pl $marker $compareGroup3
-
-perl E:\\iTRAQ\\Figure_pipeline\\volcano\\For_volcanos_ggplot.pl -cp $compareGroup -fc $fc_cut
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 CODE_I_3
 if($fc_cut==1.5){
 	print $FHI $i_code_1;
@@ -240,7 +148,6 @@ if($fc_cut==1.5){
 open(my $FHII, ">$path\\II_afterblast.bat") || die "$!";
 
 my $ii_code = <<CODE_II;
-<<<<<<< HEAD
 perl $scriptPath\\Function\\function_stat.pl
 
 python $scriptPath\\Function\\pie.py
@@ -252,30 +159,13 @@ perl $scriptPath\\Function\\pathway_stat_pie.pl -fi $compareGroup2 -n1 up -n2 do
 perl $scriptPath\\Function\\Enrichment_barchart.pl -cp $compareGroup2
 
 perl $scriptPath\\Function\\draw_enrich_number-pvalueV2.1.pl -cp $compareGroup2 -t kegg
-=======
-perl E:\\iTRAQ\\Figure_pipeline\\Function\\function_stat.pl
-
-python E:\\iTRAQ\\Figure_pipeline\\Function\\pie.py
-
-perl E:\\iTRAQ\\Figure_pipeline\\Function\\GO_compare.pl -fi $compareGroup2 -n1 up -n2 down
-
-perl E:\\iTRAQ\\Figure_pipeline\\Function\\pathway_stat_pie.pl -fi $compareGroup2 -n1 up -n2 down
-
-perl E:\\iTRAQ\\Figure_pipeline\\Function\\Enrichment_barchart.pl -cp $compareGroup2
-
-perl E:\\iTRAQ\\Figure_pipeline\\Function\\draw_enrich_number-pvalueV2.1.pl -cp $compareGroup2 -t kegg
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 CODE_II
 print $FHII $ii_code;
 
 #-----III_diffunctenrich.bat----------
 open(my $FHIII, ">$path\\III_diffunctenrich.bat") || die "$!";
 my $iii_code = <<CODE_III;
-<<<<<<< HEAD
 perl $scriptPath\\diff\\Diff_function_enrichment.pl
-=======
-perl E:\\iTRAQ\\Figure_pipeline\\diff\\Diff_function_enrichment.pl
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 CODE_III
 print $FHIII $iii_code;
 
@@ -294,11 +184,7 @@ print $FHF $function_code;
 #-----v.bat---------------------------
 open(my $V, ">$path\\v.bat") || die "$!";
 my $v_code = <<CODE_V;
-<<<<<<< HEAD
 perl $scriptPath\\excel\\project_data_excel_change_V1.2.pl
-=======
-perl E:\\iTRAQ\\Figure_pipeline\\excel\\project_data_excel_change_V1.2.pl
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 CODE_V
 print $V $v_code;
 
@@ -345,13 +231,7 @@ $path\\Project_data\\Enrichment\\GO_enrichment\\$compareGroup2\_GO_enrichment\\$
 $path\\Project_data\\Enrichment\\Pathway_enrichment\\$compareGroup2\_Pathway_enrichment\\$compareGroup2\.path-bubble.png
 $path\\Project_data\\Enrichment\\Pathway_enrichment\\$compareGroup2\_Pathway_enrichment\\$compareGroup2\.path-bubble.pdf
 PIC_PATH
-<<<<<<< HEAD
 print $PIC $pic_path;
-=======
-
-print $PIC $pic_path;
-
->>>>>>> eacc51d2f104772e85b7be1f83255eb81980999b
 #-----expDesign.txt--------------------
 open(my $EXP, ">$path\\expDesign.txt") || die "$!";
 my ($group1,$group2) = split(":",$compareGroup);
