@@ -14,7 +14,7 @@ GetOptions (
     'cp=s'	        => \$compareGroup,
     'fc=f'	        => \$fc_cut,
     'help|h'	        => \$help,
-    'f=s'	        => \$database,
+#    'f=s'	        => \$database,
     'm=s'	        => \$marker,
 );
 my $usage = <<USAGE;
@@ -22,13 +22,15 @@ USAGE:
 perl deal_parameter.pl <options>
 OPTIONS:
     Required:
-    -f	<string>    Required. Specify the database
     -cp <string>    Required. Specify the ratio pair name, something like RIF:Ctrl
     -fc <float>	    Required. Specify the FC cutoff.The optional value is 1.2, 1.5, 2   Default is 1.5
     -m	<string>    Required. Specify the marker. for example:113,114,116;117,118,121
     -h		    Optional. Type this help information.
 USAGE
 die "$usage" if $help;
+print "Please input the database which is in fasta format:\n";
+$database = <STDIN>;
+chomp $database;
 print "Please input the path of readme file, press ENTER to skip:\n";
 our $readmePath = <STDIN>;
 chomp $readmePath;
