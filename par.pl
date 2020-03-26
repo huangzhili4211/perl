@@ -195,21 +195,28 @@ open(my $PIC, ">$path\\picture_path.txt") || die "$!";
 
 my $pic_path = <<PIC_PATH;
 $path\\cv.pdf
+$path\\cv.png
 
 $path\\CVbox.pdf
+$path\\CVbox.png
 
 $path\\uniqP.pdf
+$path\\uniqP.png
 
 $path\\pepSeq.pepLength.pdf
+$path\\pepSeq.pepLength.png
 
 $path\\coverage_pie.pdf
+$path\\coverage_pie.png
 
 $path\\ratio\\normprotRatiodistribution.pdf
+$path\\ratio\\normprotRatiodistribution.png
 
 $path\\Project_data\\Volcanos\\$compareGroup2\_Volcano.pdf
 $path\\Project_data\\Volcanos\\$compareGroup2\_Volcano.png
 
 $path\\function_stat\\fun_stat.pdf
+$path\\function_stat\\fun_stat.png
 
 $path\\biological_process.pdf
 
@@ -218,10 +225,13 @@ $path\\cellular_component.pdf
 $path\\molecular_function.pdf
 
 $path\\function_stat\\$compareGroup2\_go_compare_stat.pdf
+$path\\function_stat\\$compareGroup2\_go_compare_stat.png
 
 $path\\function_stat\\$compareGroup2\_Pathway_compare_stat.pdf
+$path\\function_stat\\$compareGroup2\_Pathway_compare_stat.png
 
 $path\\Project_data\\Function\\All_ID_COG\\All_ID.fa.cog.pdf
+$path\\Project_data\\Function\\All_ID_COG\\All_ID.fa.cog.png
 
 $path\\Project_data\\Enrichment\\GO_enrichment\\$compareGroup2\_GO_enrichment\\$compareGroup2\_BP-barchart.pdf
 $path\\Project_data\\Enrichment\\GO_enrichment\\$compareGroup2\_GO_enrichment\\$compareGroup2\_BP-barchart.png
@@ -242,24 +252,17 @@ print "$group1---$marker1\n$group2---$marker2";
 my @markerArray1 = split(",",$marker1);
 my @markerArray2 = split(",",$marker2);
 my $size = @markerArray1;
-if($size == 2){
-my $exp_code2 =<<CODE_EXEP2;
-Marker\tExperiment Name
-$markerArray1[0]\t$group1
-$markerArray1[1]\t$group1
-$markerArray2[0]\t$group2
-$markerArray2[1]\t$group2
-CODE_EXEP2
-print $EXP $exp_code2;
-}elsif($size == 3){
-my $exp_code3 =<<CODE_EXP3;
-Marker\tExperiment Name
-$markerArray1[0]\t$group1
-$markerArray1[1]\t$group1
-$markerArray1[2]\t$group1
-$markerArray2[0]\t$group2
-$markerArray2[1]\t$group2
-$markerArray2[2]\t$group2
-CODE_EXP3
-print $EXP $exp_code3;
+my $i = 0;
+for(my $s=0;$s<2*$size;$s++){
+    if($s==0){
+	my $head = "Marker\tExperiment Name\n$markerArray1[$s]\t$group1\n";
+	print $EXP "$head";
+    }elsif($s<$size){
+	my $item = "$markerArray1[$s]\t$group1\n";
+	print $EXP "$item";
+    }else{
+	my $item = "$markerArray2[$i]\t$group2\n";
+	print $EXP "$item";
+	$i++;
+    }
 }
