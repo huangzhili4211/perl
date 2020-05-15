@@ -75,6 +75,10 @@ foreach(@old_name){
 	    }
     }
 }
+foreach(('GO','Pathway')){
+    copy("$path/function_stat/$compareGroup2\_$_\_compare_stat.pdf", "$path/Project_data/$_\_compare") unless (! -e "$path/function_stat/");
+}
+if($ext){exit;}
 copy("$path/iTRAQ_Report/All_ID.fa","$path/Project_data/Ident_Quant_result");
 copy("$path/Function_enrichment_summary/all_express_diff.xlsx", "$path/Project_data/Ident_Quant_result");
 our @FunctionDirArray = ("ALL_ID_COG","ALL_ID_GO","ALL_ID_Pathway","$compareGroup2\_down_ID_GO","$compareGroup2\_down_ID_Pathway","$compareGroup2\_up_ID_GO","$compareGroup2\_up_ID_Pathway");
@@ -84,9 +88,9 @@ foreach(@FunctionDirArray){
 }
 foreach(('GO','Pathway')){
     dircopy("$path\\Annotation\\$compareGroup2\_$_\_enrichment", "$path\\Project_data\\Enrichment\\$_\_enrichment\\$compareGroup2\_$_\_enrichment");
-    copy("$path/function_stat/$compareGroup2\_$_\_compare_stat.pdf", "$path/Project_data/$_\_compare");
+    #copy("$path/function_stat/$compareGroup2\_$_\_compare_stat.pdf", "$path/Project_data/$_\_compare");
 }
-if($ext){exit;}
+#if($ext){exit;}
 my $workbook = Excel::Writer::XLSX -> new("$path/Project_data/Ident_Quant_result/Ident&Quant_SummaryResult.xlsx");
 my $worksheet = $workbook -> add_worksheet("Proteins");
 my $worksheet2 = $workbook -> add_worksheet("Spectra");
