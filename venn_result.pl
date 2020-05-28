@@ -19,7 +19,6 @@ my (@abc,@abd,@acd,@bcd);
 my (@abc_only,@abd_only,@acd_only,@bcd_only);
 my (@ab_only,@ac_only,@ad_only,@bc_only,@bd_only,@cd_only);
 my @abcd;
-my %abcd;
 while(<FH_A>){
     chomp;
     my $a = $_;
@@ -299,13 +298,14 @@ foreach(@venn_group){
     my @id = @{$group_id{$group}};
     my $num = @id;
     my @cp = @{$group_cp{$group}};
-    my $cp = @cp;
+    my $cp_n = @cp;
     print "$group---$num---@cp\n";
     my $id_num = 0;
     foreach(@id){
 	$id_num++;
 	my $id = $_;
 	my $line = 0;
+	my $id_n = @id;
 	foreach(@cp){
 	    $line++;
 	    my $cp = $_;
@@ -314,37 +314,29 @@ foreach(@venn_group){
 	    my $out_items;
 	    if($cp eq $cp_a){
 		$exp = $express_a{$cp_a}{$id};
-		my @exp = split/\t/,$exp;
-		shift @exp;
-		$exp2 = join/\t/,@exp;
 	    }elsif($cp eq $cp_b){
 		$exp = $express_b{$cp_b}{$id};
-		my @exp = split/\t/,$exp;
-		shift @exp;
-		$exp2 = join/\t/,@exp;
 	    }elsif($cp eq $cp_c){
 		$exp = $express_c{$cp_c}{$id};
-		my @exp = split/\t/,$exp;
-		shift @exp;
-		$exp2 = join/\t/,@exp;
 	    }elsif($cp eq $cp_d){
 		$exp = $express_d{$cp_d}{$id};
-		$exp2 = $exp =~ s/^(tr)||(sp)\|\w+\|\w+_MAIZE//r;
 	    }
+	    my $temp_id = $id =~ s/\|/\\|/rg;
+	    $exp2 = $exp =~ s/$temp_id//rg;
 	    if($line==1 && $id_num==1){
 		$out_items = "$cp\t$num\t$exp\n"; 
-	    }elsif($line==2 && $id_num==1){
-		$out_items = "$cp".""."\t\t$exp\n";
-	    }elsif($line==3 && $id_num==1){
-		$out_items = "$cp".""."\t\t$exp\n";
-	    }elsif($line==4 && $id_num==1){
-		$out_items = "$cp".""."\t\t$exp\n";
+	    }elsif($line<=4 && $id_num==1){
+		$out_items = "$cp\t\t$exp2\n";
 	    }elsif($line==1 && $id_num>=2){
-		$out_items = "\t".""."\t$exp\n";
+		$out_items = "\t\t$exp\n";
 	    }elsif($line>=2){
-		$out_items = ""."\t\t$exp\n";
+		$out_items = "\t\t$exp2\n";
 	    }
-	    print OUT "$out_items";
+	    if($id_num == $id_n && $line == $cp_n){
+		print OUT "$out_items\n";
+	    }else{
+		print OUT "$out_items";
+	    }
 	}
     }
 }
