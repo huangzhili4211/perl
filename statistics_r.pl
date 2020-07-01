@@ -6,4 +6,4 @@ $Rcode -> run(qq/
 pdf("a.pdf")
 x <- c(1,5,3)
 barplot(x)
-/);
+/);    #注意最后的/前面不能有空格！
